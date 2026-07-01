@@ -18,8 +18,11 @@ def load_model(path, input_dim, edge_dim):
 # Basic evaluation
 def evaluate(loader, model, scaler=None):
     predictions, true_values = [], []
+    device = next(model.parameters()).device
+    model.eval()
     with torch.no_grad():
         for data in loader:
+            data = data.to(device)
             mu, _ = model(data)
             pred = mu.cpu().numpy()
             true = data.y.view(-1, 1).cpu().numpy()
