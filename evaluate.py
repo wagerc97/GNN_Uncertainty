@@ -33,6 +33,8 @@ def evaluate(loader, model, scaler=None):
 # Evaluation with uncertainty
 def evaluate_with_uncertainty(loader, model, num_samples, device, scaler=None):
     model.eval()
+    # Determine the device the model is currently on
+    device = next(model.parameters()).device
     for m in model.modules():
         if m.__class__.__name__.startswith('Dropout'):
             m.train()
